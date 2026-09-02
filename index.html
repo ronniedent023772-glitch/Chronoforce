@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
+  <title>Magic Test</title>
+
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="MagicApp">
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    body {
+      background-color: #000;
+      color: #fff;
+      font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+      min-height: 100vh;
+      min-height: -webkit-fill-available;
+      padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+
+    #stage {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+    }
+
+    .secret-box {
+      font-size: 2rem;
+      font-weight: 700;
+      opacity: 0;
+      transition: opacity 0.2s ease;
+    }
+
+    .visible {
+      opacity: 1;
+    }
+  </style>
+</head>
+<body>
+  <div id="stage">
+    <p style="color: #666; font-size: 0.9rem;">화면을 탭하세요</p>
+    <div id="result" class="secret-box">♠ A</div>
+  </div>
+
+  <script>
+    const stage = document.getElementById('stage');
+    const result = document.getElementById('result');
+
+    stage.addEventListener('click', () => {
+      result.classList.toggle('visible');
+    });
+  </script>
+</body>
+</html>
