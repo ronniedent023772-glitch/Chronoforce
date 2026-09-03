@@ -451,12 +451,18 @@
         clearInterval(timerInterval);
         elapsedTime = Date.now() - startTime;
 
-        // ★ 사이클 반복 마술 로직 (예: 3, 6, 9번째 계속 발동) ★
+        // ★ 사이클 반복 마술 로직 및 내부 시간(데이터) 완벽 조작 ★
         if (stopCount >= forceDelay) {
-          // 1. 설정한 횟수(타이밍)에 도달하면 포스 숫자 보여줌
-          display.textContent = formatDisplay(elapsedTime, forceHundredths);
+          // 1. 내부 시간(elapsedTime) 자체를 포스 숫자에 맞춰 조작합니다.
+          // (예: 2초 15에 멈췄는데 포스 숫자가 "59"라면?)
+          const baseMs = Math.floor(elapsedTime / 1000) * 1000; // 초 단위까지만 떼어냄 (2000ms)
+          const forcedMs = parseInt(forceHundredths, 10) * 10;  // "59"를 밀리초(590ms)로 변환
+          elapsedTime = baseMs + forcedMs; // 내부 시간을 2590ms(2초 59)로 완벽히 덮어씌움!
+
+          // 2. 조작된 진짜(?) 시간으로 화면에 띄움
+          display.textContent = formatDisplay(elapsedTime);
           
-          // 2. 포스가 발동되었으므로 다음 사이클(예: 다음 3번째)을 위해 횟수를 다시 0으로 초기화
+          // 3. 포스가 발동되었으므로 다음 사이클을 위해 횟수를 다시 0으로 초기화
           stopCount = 0; 
         } else {
           // 1. 아직 타이밍이 안 됐다면 진짜 멈춘 시간을 보여줌
@@ -466,7 +472,8 @@
           stopCount++; 
         }
 
-        // 중단 시점의 랩 시간도 최종 업데이트
+        // 중단 시점의 랩 시간도 최종 업데이트 
+        // (내부 시간이 조작되었으므로, 랩 시간도 59에 맞춰 자연스럽게 자동 계산됨!)
         if (activeLapTimeSpan) {
           activeLapTimeSpan.textContent = formatDisplay(elapsedTime - lastLapSplitTime);
         }
